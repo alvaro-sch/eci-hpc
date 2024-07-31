@@ -3,14 +3,15 @@
 
 #include <mpi.h>
 
-#define CHECK_MPI(MPICALL) do {  \
-    int status = (MPICALL);      \
-    if (status != MPI_SUCCESS) { \
-        fprintf(stderr, "MPI call failed: "#MPICALL"\n");   \
-        MPI_Finalize();          \
-        exit(-1);                \
-    }                            \
-} while (0)
+#define CHECK_MPI(MPICALL)                                                     \
+    do {                                                                       \
+        int status = (MPICALL);                                                \
+        if (status != MPI_SUCCESS) {                                           \
+            fprintf(stderr, "MPI call failed: " #MPICALL "\n");                \
+            MPI_Finalize();                                                    \
+            exit(-1);                                                          \
+        }                                                                      \
+    } while (0)
 
 int main(int argc, char *argv[]) {
     CHECK_MPI(MPI_Init(&argc, &argv));
@@ -29,4 +30,3 @@ int main(int argc, char *argv[]) {
 
     CHECK_MPI(MPI_Finalize());
 }
-

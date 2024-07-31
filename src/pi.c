@@ -3,14 +3,15 @@
 
 #include <mpi.h>
 
-#define CHECK_MPI(MPICALL) do {  \
-    int status = (MPICALL);      \
-    if (status != MPI_SUCCESS) { \
-        fprintf(stderr, "MPI call failed: "#MPICALL"\n");   \
-        MPI_Finalize();          \
-        exit(-1);                \
-    }                            \
-} while (0)
+#define CHECK_MPI(MPICALL)                                                     \
+    do {                                                                       \
+        int status = (MPICALL);                                                \
+        if (status != MPI_SUCCESS) {                                           \
+            fprintf(stderr, "MPI call failed: " #MPICALL "\n");                \
+            MPI_Finalize();                                                    \
+            exit(-1);                                                          \
+        }                                                                      \
+    } while (0)
 
 int read_n(int rank, const char *path) {
     if (rank != 0) {
@@ -63,13 +64,13 @@ int main(int argc, char *argv[]) {
     double partial_sum = partial_pi(from, to, n);
 
     double pi;
-    CHECK_MPI(MPI_Reduce(&partial_sum, &pi, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD));
+    CHECK_MPI(MPI_Reduce(
+        &partial_sum, &pi, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD));
 
     if (rank == 0) {
-        pi /= (double) n;
+        pi /= (double)n;
         printf("pi = %f\n", pi);
     }
 
     CHECK_MPI(MPI_Finalize());
 }
-
