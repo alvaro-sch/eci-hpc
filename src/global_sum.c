@@ -64,6 +64,7 @@ void global_sum_tree(int x, int *y, int root, MPI_Comm comm) {
 
 void global_sum_reduce(int x, int *y, int root, MPI_Comm comm) {
     // this can be implemented in a single call to `MPI_Reduce`
+    MPI_Reduce(&x, y, 1, MPI_INT, MPI_SUM, root, comm);
 }
 
 void test_global_sum(
@@ -77,7 +78,7 @@ int main(int argc, char *argv[]) {
 
     TEST_GLOBAL_SUM(global_sum_ring);
     // TEST_GLOBAL_SUM(global_sum_tree);
-    // TEST_GLOBAL_SUM(global_sum_reduce);
+    TEST_GLOBAL_SUM(global_sum_reduce);
 
     MPI_Finalize();
 }
