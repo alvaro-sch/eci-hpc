@@ -1,5 +1,6 @@
 *.o
 
+hello_world_sync
 hello_world
 pi
 
