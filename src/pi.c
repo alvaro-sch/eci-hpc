@@ -31,9 +31,9 @@ int read_n(int rank, const char *path) {
     return n;
 }
 
-float partial_pi(int from, int to, int n) {
-    float h = 1.0 / n;
-    float partial_sum = 0.0;
+double partial_pi(int from, int to, int n) {
+    double h = 1.0 / n;
+    double partial_sum = 0.0;
     for (int i = from; i < to; ++i) {
         double x = (i + .5) * h;
         partial_sum += 4.0 / (1.0 + x * x);
