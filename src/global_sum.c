@@ -17,11 +17,14 @@ void global_sum_ring(int x, int *y, int root, MPI_Comm comm) {
         // use `MPI_Sendrecv` to
         // send initial value `x` to process `next`
         // receive final result `y` from process `prev`
+        MPI_Sendrecv(&x, 1, MPI_INT, next, 42, y, 1, MPI_INT, prev, 42, comm, MPI_STATUS_IGNORE);
     } else {
         int tmp; // partial result goes here
         // use `MPI_Recv` to receive partial result from process `prev`
+        MPI_Recv(&tmp, 1, MPI_INT, prev, 42, comm, MPI_STATUS_IGNORE);
         tmp += x;
         // use `MPI_Send` to send partial result to process `next`
+        MPI_Rsend(&tmp, 1, MPI_INT, next, 42, comm);
     }
 }
 
