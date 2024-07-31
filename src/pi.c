@@ -51,7 +51,6 @@ int main(int argc, char *argv[]) {
     CHECK_MPI(MPI_Comm_size(MPI_COMM_WORLD, &proc_count));
 
     int n = read_n(rank, "input/pi.dat");
-    CHECK_MPI(MPI_Barrier(MPI_COMM_WORLD));
     CHECK_MPI(MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD));
 
     int op_count = n / proc_count;
@@ -59,8 +58,9 @@ int main(int argc, char *argv[]) {
     int to = from + op_count;
     to = to > n ? n : to;
 
+    printf("rank %d calculating range [%d %d]\n", rank, from, to);
+
     double partial_sum = partial_pi(from, to, n);
-    CHECK_MPI(MPI_Barrier(MPI_COMM_WORLD));
 
     double pi;
     CHECK_MPI(MPI_Reduce(&partial_sum, &pi, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD));
