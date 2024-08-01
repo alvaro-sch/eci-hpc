@@ -1,12 +1,13 @@
 CC = mpicc
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -fopenmp
 LDFLAGS =
 
 SOURCE_DIR = src
 SOURCE = $(wildcard $(SOURCE_DIR)/*.c)
 OBJECT = $(SOURCE:.c=.o)
 
-TARGETS = hello_world hello_world_sync pi global_sum
+TARGETS = hello_world hello_world_sync pi global_sum \
+		  intra_hello_world
 
 all: $(TARGETS)
 
