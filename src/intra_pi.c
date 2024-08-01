@@ -29,12 +29,14 @@ double partial_pi(int from, int to, int n) {
 }
 
 int main(int argc, char *argv[]) {
-    (void) argc; (void) argv;
+    (void)argc;
+    (void)argv;
+
     int n = read_n("input/pi.dat");
 
     double pi = 0;
     double h = 1.0 / n;
-#pragma omp parallel for default(none) shared(n, h) reduction(+:pi)
+#pragma omp parallel for default(none) shared(n, h) reduction(+ : pi)
     for (int i = 0; i < n; ++i) {
         double x = (i + .5) * h;
         pi += 4.0 / (1.0 + x * x);
