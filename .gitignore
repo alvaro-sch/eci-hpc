@@ -1,5 +1,6 @@
 *.o
 
+intra_pi
 intra_hello_world
 global_sum
 hello_world_sync
