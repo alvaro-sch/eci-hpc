@@ -40,10 +40,12 @@ void global_sum_tree(int x, int *y, int root, MPI_Comm comm) {
             if (r + dist < s) {
                 int tmp;
                 // use `MPI_Recv` to receive partial result from right process
+                MPI_Recv(&tmp, 1, MPI_INT, r + dist, 42, comm, MPI_STATUS_IGNORE);
                 res += tmp;
             }
         } else {
             // use `MPI_Send` to send partial result to left process
+            MPI_Send(&res, 1, MPI_INT, r - dist, 42, comm);
             break;
         }
     }
@@ -51,14 +53,17 @@ void global_sum_tree(int x, int *y, int root, MPI_Comm comm) {
     MPI_Request req;
     if (r == root) {
         // use `MPI_Irecv` to initiate receive from process 0
+        MPI_Irecv(y, 1, MPI_INT, 0, 42, comm, &req);
     }
 
     if (r == 0) {
         // use `MPI_Send` to send final result to process `root`
+        MPI_Send(&res, 1, MPI_INT, root, 42, comm);
     }
 
     if (r == root) {
         // use `MPI_Wait` to complete receive operation
+        MPI_Wait(&req, MPI_STATUS_IGNORE);
     }
 }
 
@@ -77,7 +82,7 @@ int main(int argc, char *argv[]) {
     MPI_Init(&argc, &argv);
 
     TEST_GLOBAL_SUM(global_sum_ring);
-    // TEST_GLOBAL_SUM(global_sum_tree);
+    TEST_GLOBAL_SUM(global_sum_tree);
     TEST_GLOBAL_SUM(global_sum_reduce);
 
     MPI_Finalize();
