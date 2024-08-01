@@ -8,6 +8,9 @@ int main() {
         int tid = omp_get_thread_num();
         int tc = omp_get_num_threads();
 
-        printf("hello from %d of %d\n", tid, tc);
+#pragma omp single
+        printf("there are %d threads\n", tc);
+
+        printf("hello from %d!\n", tid);
     }
 }
