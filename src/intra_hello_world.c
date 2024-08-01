@@ -11,4 +11,3 @@ int main() {
         printf("hello from %d of %d\n", tid, tc);
     }
 }
-
